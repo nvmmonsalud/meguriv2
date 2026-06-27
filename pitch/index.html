@@ -207,8 +207,9 @@ h2.head{font-family:var(--font-display);font-weight:900;line-height:1.05;letter-
   @page{size:1280px 720px;margin:0}
   body{overflow:visible}
   .topbar,.nav,.footnote,.progress,.hint{display:none!important}
-  .deck{position:static}
-  .slide{display:flex!important;position:relative;inset:auto;opacity:1!important;transform:none!important;page-break-after:always;height:720px;width:1280px;animation:none}
+  .deck{display:block!important;position:static}
+  .slide{display:flex!important;position:relative;inset:auto;opacity:1!important;transform:none!important;page-break-after:always;break-after:page;height:720px;width:1280px;overflow:hidden;animation:none}
+  .slide:last-child{page-break-after:auto;break-after:auto}
   .glowA,.glowB{filter:blur(90px)}
 }
 </style>

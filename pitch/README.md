@@ -4,6 +4,10 @@ A self-contained, 5-slide investor/judge pitch deck for **Meguri 巡り**, built
 the product's visual identity (deep-indigo surface, vermilion + gold palette, Japanese
 typography, asanoha pattern).
 
+## Files
+- **`index.html`** — the live, interactive deck (primary; best fidelity with fonts/images online)
+- **`meguri-pitch-deck.pdf`** — a static 5-page landscape export for sharing / emailing
+
 ## Present it
 Open `pitch/index.html` in any browser and go fullscreen.
 
@@ -12,7 +16,7 @@ Open `pitch/index.html` in any browser and go fullscreen.
 | Next / previous | `→` `←` · `Space` · `PageUp/Down` · swipe |
 | Jump to slide | number keys `1`–`5`, `Home`, `End` |
 | Fullscreen | `F` |
-| Export to PDF | `P` (or `Cmd/Ctrl+P` → Save as PDF, **landscape**) |
+| Export to PDF | `P` (or `Cmd/Ctrl+P` → Save as PDF, **landscape**) — a pre-built `meguri-pitch-deck.pdf` is also included |
 
 You can also click the dots / arrows in the bottom-right.
 
