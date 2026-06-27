@@ -1,0 +1,146 @@
+{
+  "entities": {
+    "Player": {
+      "title": "Player",
+      "description": "Represents a mobile-web player exploring Tokyo",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique player ID (e.g., anonymous auth UID or custom local ID)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the player"
+        },
+        "guideId": {
+          "type": "string",
+          "description": "ID of the selected AI spirit-guide (kohaku, sen, riku)"
+        },
+        "xp": {
+          "type": "integer",
+          "description": "Current experience points of the player"
+        },
+        "level": {
+          "type": "integer",
+          "description": "Current level of the player"
+        },
+        "kakera": {
+          "type": "integer",
+          "description": "Current currency (Kakera) owned"
+        },
+        "partyId": {
+          "type": "string",
+          "description": "The ID of the party the player currently belongs to, if any"
+        },
+        "visitedLocations": {
+          "type": "array",
+          "description": "List of quest IDs completed by the player"
+        },
+        "lastActive": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of last activity for realtime presence"
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Last known player latitude"
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Last known player longitude"
+        },
+        "lastDailyReset": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of the last daily quest reset"
+        },
+        "dailyQuests": {
+          "type": "array",
+          "description": "Active daily quests with completion statuses"
+        }
+      },
+      "required": ["id", "name", "guideId", "xp", "level", "kakera"]
+    },
+    "PassportItem": {
+      "title": "PassportItem",
+      "description": "An unlocked illustrated postcard in the player's passport",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique postcard or quest ID"
+        },
+        "questId": {
+          "type": "string",
+          "description": "ID of the associated quest"
+        },
+        "title": {
+          "type": "string",
+          "description": "Postcard title"
+        },
+        "locationName": {
+          "type": "string",
+          "description": "Where the postcard was earned"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the ukiyo-e postcard image"
+        },
+        "unlockedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the card was earned"
+        },
+        "spiritMessage": {
+          "type": "string",
+          "description": "A customized congratulatory or poetic text from the AI spirit guide"
+        }
+      },
+      "required": ["id", "questId", "title", "locationName", "imageUrl", "unlockedAt"]
+    },
+    "Party": {
+      "title": "Party",
+      "description": "A multiplayer co-op party for sharing quests",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique party invitation code or ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Party name"
+        },
+        "leaderId": {
+          "type": "string",
+          "description": "Player ID of the party creator"
+        },
+        "members": {
+          "type": "array",
+          "description": "Array of member objects with id, name, avatar, guideId, lat, lng"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the party was created"
+        }
+      },
+      "required": ["id", "name", "leaderId", "members"]
+    }
+  },
+  "firestore": {
+    "/players/{playerId}": {
+      "schema": "Player",
+      "description": "Individual player profiles and progress"
+    },
+    "/players/{playerId}/passport/{postcardId}": {
+      "schema": "PassportItem",
+      "description": "Unlocked illustrated postcards for each player"
+    },
+    "/parties/{partyId}": {
+      "schema": "Party",
+      "description": "Active parties for cooperative exploration"
+    }
+  }
+}

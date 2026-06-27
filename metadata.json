@@ -1,0 +1,6 @@
+{
+  "name": "Meguri",
+  "description": "Mobile-web location-based quest game for tourists in Tokyo, featuring AI spirit guides, GPS check-ins, camera verification, and ukiyo-e postcards.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

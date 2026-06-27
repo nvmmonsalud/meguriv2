@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Meguri 巡り | Tokyo's Mystical Quest App</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Source+Serif+4:ital,wght@0,400;1,400&amp;family=Zen+Kaku+Gothic+New:wght@700&amp;family=Shippori+Mincho:wght@600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#3f2e00",
+                    "on-tertiary-container": "#24008c",
+                    "on-error": "#690005",
+                    "tertiary-fixed-dim": "#c7bfff",
+                    "surface-container": "#211e2b",
+                    "outline-variant": "#5a413c",
+                    "outline": "#aa8983",
+                    "on-background": "#e7dff2",
+                    "on-tertiary": "#2a019e",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#ffb4a6",
+                    "surface-variant": "#363341",
+                    "surface": "#14111e",
+                    "tertiary-fixed": "#e4dfff",
+                    "background": "#14111e",
+                    "secondary-container": "#b58a17",
+                    "primary-container": "#fa5b42",
+                    "on-secondary-fixed-variant": "#5b4300",
+                    "on-primary-container": "#5a0500",
+                    "inverse-surface": "#e7dff2",
+                    "surface-dim": "#14111e",
+                    "on-secondary-container": "#372700",
+                    "on-secondary-fixed": "#251a00",
+                    "surface-tint": "#ffb4a6",
+                    "on-primary-fixed": "#3f0200",
+                    "inverse-on-surface": "#322e3d",
+                    "surface-container-low": "#1d1a27",
+                    "primary-fixed": "#ffdad4",
+                    "surface-container-lowest": "#0f0c19",
+                    "secondary": "#f0c04d",
+                    "tertiary-container": "#8e7fff",
+                    "on-tertiary-fixed-variant": "#422cb3",
+                    "surface-bright": "#3b3746",
+                    "on-primary": "#660600",
+                    "error-container": "#93000a",
+                    "on-primary-fixed-variant": "#900d00",
+                    "tertiary": "#c7bfff",
+                    "on-surface": "#e7dff2",
+                    "secondary-fixed": "#ffdf9d",
+                    "on-surface-variant": "#e2beb8",
+                    "inverse-primary": "#b32915",
+                    "primary": "#ffb4a6",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-highest": "#363341",
+                    "on-tertiary-fixed": "#170065"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "stack-lg": "32px",
+                    "container-padding": "24px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Zen Kaku Gothic New", "sans-serif"],
+                    "body-sm": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "label-caps": ["Inter", "sans-serif"],
+                    "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+                    "display-lg-mobile": ["Zen Kaku Gothic New", "sans-serif"],
+                    "story-italic": ["Shippori Mincho", "serif"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                    "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                    "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "display-lg-mobile": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+                    "story-italic": ["20px", { "lineHeight": "32px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(33, 28, 48, 0.85);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(250, 91, 66, 0.3);
+        }
+        .vermilion-glow {
+            box-shadow: 0 0 20px rgba(233, 79, 55, 0.4);
+        }
+        .asanoha-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='70' viewBox='0 0 40 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 11.547V34.641L20 46.188L0 34.641V11.547L20 0z' fill='none' stroke='%23ffffff' stroke-opacity='0.03'/%3E%3C/svg%3E");
+        }
+        .seigaiha-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='60' viewBox='0 0 100 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30c0-16.568 13.431-30 30-30s30 13.432 30 30-13.431 30-30 30S0 46.568 0 30zm100 0c0-16.568-13.431-30-30-30s-30 13.432-30 30 13.431 30 30 30 30-13.432 30-30z' fill='none' stroke='%23ffffff' stroke-opacity='0.03'/%3E%3C/svg%3E");
+        }
+        .floating-mockup {
+            animation: floating 6s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(2deg); }
+            50% { transform: translateY(-20px) rotate(-1deg); }
+        }
+        .dotted-path {
+            background-image: radial-gradient(circle, #f2c14e 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #14111e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fa5b42;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container/30">
+    <!-- 1. Sticky Nav -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-card px-container-padding py-unit flex justify-between items-center h-16">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">temple_hindu</span>
+            <span class="font-display-lg text-headline-md tracking-tight text-primary">Meguri <span class="font-normal opacity-70">巡り</span></span>
+        </div>
+        <a href="/app" class="bg-primary-container text-on-primary-fixed font-bold px-6 py-2 rounded-full vermilion-glow hover:scale-105 transition-all duration-300 flex items-center justify-center">
+            Launch App
+        </a>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center pt-24 overflow-hidden px-container-padding">
+        <div class="relative z-10 text-center max-w-4xl">
+            <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg mb-stack-md">
+                Tokyo is hiding something.<br/>
+                <span class="text-primary text-glow">Let's go find it.</span>
+            </h1>
+            <p class="font-story-italic text-story-italic text-secondary mb-stack-lg max-w-2xl mx-auto italic text-xl">
+                An AI spirit-guide. Real quests. A postcard for every discovery.
+            </p>
+            
+            <!-- Hero CTA -->
+            <div class="flex justify-center gap-4 mb-10">
+                <a href="/app" class="bg-primary-container text-on-primary-fixed font-bold px-10 py-4 rounded-full vermilion-glow hover:scale-105 transition-all duration-300 shadow-[0_0_30px_rgba(250,91,66,0.5)] text-lg">
+                    Launch Meguri Quest
+                </a>
+            </div>
+
+            <div class="relative mt-stack-lg flex justify-center">
+                <div class="absolute -inset-10 bg-primary-container/20 blur-[100px] rounded-full"></div>
+                <div class="floating-mockup relative w-[280px] md:w-[320px] aspect-[9/19] rounded-[3rem] border-8 border-surface-container-highest overflow-hidden shadow-2xl">
+                    <img alt="App interface showing a map of Tokyo with glowing quest markers and a fox spirit avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVrNg3pteWhD7oS6rBxsCUfGf_DKsqpCSzj97Rm5rj0EV0dDL62YKRjBf2ZeTrj_TZE0fvKD9XSBo1uAzbowOv3lNjXwdq3reZJagomKCRQjUR3WPZK-xcnw4hb36p0pegtRUvkKQTDXMUQuL2YCZn6Uj-uJoTTysiMvqJ6NX5W8XSCHE0NTil7wif5GqKjDr8Gpb0qf_AEFGMdXroW8IWFW2_RtrVW6nMGHvQhflJ7hJwFNplLNeptjSE0C4AXzJkdb0aswYyk9xM"/>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. The Hook -->
+    <section class="py-stack-lg bg-surface relative asanoha-pattern">
+        <div class="max-w-3xl mx-auto px-container-padding text-center relative z-10">
+            <div class="inline-flex items-center justify-center p-3 rounded-full bg-secondary-container/20 border border-secondary/30 mb-stack-md">
+                <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+            </div>
+            <h2 class="font-headline-md text-headline-md mb-stack-md text-on-surface-variant">The Unseen Layers of the City</h2>
+            <p class="font-body-lg text-body-lg text-on-surface/80 leading-relaxed">
+                Guided by a 400-year-old fox spirit who knows Tokyo's every secret, Meguri transforms your walk into a pilgrimage. We don't show you the tourist traps. We lead you to the moss-covered shrines tucked behind vending machines, the vinyl bars with no signs, and the stories that only the wind remembers.
+            </p>
+        </div>
+    </section>
+
+    <!-- 4. How it Works -->
+    <section class="py-stack-lg px-container-padding max-w-5xl mx-auto">
+        <h3 class="font-display-lg-mobile text-center mb-16 text-3xl font-bold">The Journey</h3>
+        <div class="relative flex flex-col gap-12">
+            <!-- Dotted Line Background for Mobile -->
+            <div class="absolute left-8 top-0 bottom-0 w-px border-l-2 border-dashed border-secondary/30 md:hidden"></div>
+            <!-- Step 1 -->
+            <div class="flex items-start gap-8 relative">
+                <div class="w-16 h-16 shrink-0 rounded-full bg-surface-container flex items-center justify-center z-10 border border-secondary/50 shadow-[0_0_15px_rgba(242,193,78,0.2)]">
+                    <span class="material-symbols-outlined text-secondary">person_search</span>
+                </div>
+                <div>
+                    <h4 class="font-headline-md text-headline-md text-primary mb-2">1. Choose Your Guide</h4>
+                    <p class="text-on-surface/70">Pick an AI companion with unique lore and specialized knowledge of Tokyo's culture.</p>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="flex items-start gap-8 relative">
+                <div class="w-16 h-16 shrink-0 rounded-full bg-surface-container flex items-center justify-center z-10 border border-secondary/50 shadow-[0_0_15px_rgba(242,193,78,0.2)]">
+                    <span class="material-symbols-outlined text-secondary">explore</span>
+                </div>
+                <div>
+                    <h4 class="font-headline-md text-headline-md text-primary mb-2">2. Get Your Quest</h4>
+                    <p class="text-on-surface/70">Receive a cryptic clue or a location pin based on your current vibe and location.</p>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="flex items-start gap-8 relative">
+                <div class="w-16 h-16 shrink-0 rounded-full bg-surface-container flex items-center justify-center z-10 border border-secondary/50 shadow-[0_0_15px_rgba(242,193,78,0.2)]">
+                    <span class="material-symbols-outlined text-secondary">qr_code_scanner</span>
+                </div>
+                <div>
+                    <h4 class="font-headline-md text-headline-md text-primary mb-2">3. Walk &amp; Scan</h4>
+                    <p class="text-on-surface/70">Explore the real world. Use our AR scanner to confirm you've reached the hidden landmark.</p>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="flex items-start gap-8 relative">
+                <div class="w-16 h-16 shrink-0 rounded-full bg-surface-container flex items-center justify-center z-10 border border-secondary/50 shadow-[0_0_15px_rgba(242,193,78,0.2)]">
+                    <span class="material-symbols-outlined text-secondary">photo_album</span>
+                </div>
+                <div>
+                    <h4 class="font-headline-md text-headline-md text-primary mb-2">4. Collect Your Postcard</h4>
+                    <p class="text-on-surface/70">Unlock a generative AI ukiyo-e postcard of the location to keep in your digital archive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Postcard Gallery -->
+    <section class="py-stack-lg overflow-hidden">
+        <div class="px-container-padding mb-8 flex justify-between items-end">
+            <h3 class="font-display-lg-mobile text-2xl font-bold">Collect the City</h3>
+            <span class="font-label-caps text-secondary font-semibold">128 KAKERA REMAINING</span>
+        </div>
+        <div class="flex gap-6 overflow-x-auto pb-8 px-container-padding no-scrollbar snap-x">
+            <div class="snap-center shrink-0 w-72 h-[450px] glass-card rounded-2xl overflow-hidden relative group">
+                <img alt="Ukiyo-e style digital artwork of Shibuya Crossing during a neon-lit rainstorm" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_JvRUmyDtkf2RrManpJny1bdB1OeTp9zFGXif6d9Tii_WFLMSFy8u44u-vA95ly0lQIPc1fzSg19VS8uFt0ZJG3NJOhjss_pT9aSEB9pvMTjHBQBvAhuVvFXmBbPVAkqngaEwT4DWw8xym9Hd70S4MkWuGTgV6HL-SeBSK0KOeq8wh9yKzZfaebyloArTN12Nxy1CHUrjkhV3Oqp3fwq326bSM8iPPHnTGBCiuFM3vBkMK-e2iqKTysahG1-5zcOIVfnZAQ8f1EJu"/>
+                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-surface to-transparent">
+                    <p class="font-label-caps text-primary mb-1">SHIBUYA</p>
+                    <h5 class="font-headline-md text-white text-lg font-bold">The Indigo Nexus</h5>
+                </div>
+            </div>
+            <div class="snap-center shrink-0 w-72 h-[450px] glass-card rounded-2xl overflow-hidden relative group">
+                <div class="w-full h-full bg-surface-container-high bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuApHbx8FVjJkvPwYoIYBhsYL72vMfrn3i_CVAo8sJbHGD4vSu7SslJH2Sfa4ZGOBMaO7dStb4i-scBCqw6Mfo9tU4MElQJchEVcuX1IqxV6_xVKJ6nZF4Zv03Npc3brZUgKVuiDGcgo8_XYuIqBLOWArMSuY9Qv9_sQulCJONmZYLbtvhnwYT4wNcbVPed0FJgkC6voWXR2uuZeSNwxnvXKrQ9SFxdr9XcoBlvPVytA1Ok4il0sntzPuHrTPCpRm2GK1k8yRIMLk3Lx')"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-surface to-transparent">
+                    <p class="font-label-caps text-primary mb-1">AKASAKA</p>
+                    <h5 class="font-headline-md text-white text-lg font-bold">Hidden Whisper</h5>
+                </div>
+            </div>
+            <div class="snap-center shrink-0 w-72 h-[450px] glass-card rounded-2xl overflow-hidden relative group">
+                <div class="w-full h-full bg-surface-container-high bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-80" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDYwEuyPlhtBi11tU7ljqyGICLnNxXRw0R6PVmk3p2fxXHQAWNRqcRhiR1YDytsALf4m1OoYzSnGL9xb-dhXnooD-HRelZ7aDKQY0BcJkECsvQkMdf7t1bhHE191DvPatPc5NpWngMZ7oLGvkkJA2bpH1n26zW2RbTPsmskjkA7uyZVwzRuLp1wjb1QQK33X43ksAAL_CpsuKFz-IIrCiH0LsWq-SFi6R1uRfzD1vBlckUzzEqVS6HchNFNy6JXFFloQaBp7Apqk7W4')"></div>
+                <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-surface to-transparent">
+                    <p class="font-label-caps text-primary mb-1">SHINJUKU</p>
+                    <h5 class="font-headline-md text-white text-lg font-bold">Lantern's Grin</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Meet Your Guides -->
+    <section class="py-stack-lg px-container-padding bg-surface-container-low">
+        <h3 class="font-display-lg-mobile text-center mb-12 text-3xl font-bold">Meet Your Guides</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Kohaku -->
+            <div class="glass-card rounded-3xl p-6 text-center border border-white/5 flex flex-col items-center">
+                <div class="w-32 h-32 rounded-full mb-6 border-4 border-primary p-1 overflow-hidden">
+                    <img alt="Character portrait of Kohaku, an ethereal fox spirit with pointed ears and a glowing traditional mask" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt4GKZBEXMgCJIJ8U6fqHjTvgVT_dYTYiS1yGDsm83c3srtD25RyUTeVpARH6I8LPM4csOWaTM-7Qe8ChFW-RK-AHxYM1ghGpJrNysbwwXU5FUTnl3LrhFTczEB-sLHPHjCWlu3K1_EZv282CdGMO16sTf3vnIIBN7vrgnuf0BURJ9W0LTnmrScGJxfMCkpVJw5cMCLYPQfEn7SayU9KB261Yte3K4yrDM0mNKLKc2UxQlBmofJj8aBrpvXa6agfBHhOKmQSdW2UTk"/>
+                </div>
+                <h4 class="font-headline-md text-primary mb-2 text-xl font-bold">Kohaku</h4>
+                <p class="font-label-caps text-secondary mb-4 text-xs tracking-wider">FOX-SPIRIT GUIDE</p>
+                <p class="text-body-sm text-on-surface-variant text-sm">An ancient guardian of the city's leylines. Specializes in hidden shrines and spiritual history.</p>
+            </div>
+            <!-- Sen -->
+            <div class="glass-card rounded-3xl p-6 text-center border border-white/5 flex flex-col items-center">
+                <div class="w-32 h-32 rounded-full mb-6 border-4 border-secondary p-1 overflow-hidden">
+                    <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtYZtOpTnz-dCLM681AWnHznJOdwEKsoKZ52Xe6vhNTj91xsmrpHEpkvBzwULNPI2yxuyTXApesRghQX3wq3Y2_DbqEnp1z_Zxfa2Gz0Fdr-Vhghf4Vof86OZcVwy6Knkq2Snjv0Smi64QuNejAHg8ssJlc7gfYu-I_qbBR3Z6YTqPQUFuPWezo800faPTlVyZ9N3CSaHrisXvFDPLWQ7X0q8QvQ1t-WRyG4JI16f2Rvi3tEm41rzvdewh9zFeKk2h9db7NJcoCyBM')"></div>
+                </div>
+                <h4 class="font-headline-md text-primary mb-2 text-xl font-bold">Sen</h4>
+                <p class="font-label-caps text-secondary mb-4 text-xs tracking-wider">TEA-MASTER</p>
+                <p class="text-body-sm text-on-surface-variant text-sm">A student of silence. Sen leads you to the quietest corners and authentic craft workshops.</p>
+            </div>
+            <!-- Riku -->
+            <div class="glass-card rounded-3xl p-6 text-center border border-white/5 flex flex-col items-center">
+                <div class="w-32 h-32 rounded-full mb-6 border-4 border-tertiary p-1 overflow-hidden">
+                    <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAijLsPV2WgX0kzjiNoRV9uKSFuXWJRY3jsUeh7m-3zSTNPgnhkEZmfl-04R1L-T1V5G9O4tHgCj5r7jePUpmZF3V18wHzaRS8qL0sLfdJa3GSlEGxoRjTvjf2AAUlPaEUd41Ocqi-EzBdQkPigf708QQVwTBegRZMIIqI-5qwrXQN_tJ349ueAJL7SF0mBw3TY-2JXH9C3NSXtaPBbucMKyUVS0JyYxDs7MkGH0VhGFDIG9kHogESCNSMAx8LQeUmZM44T4xtWVDK2')"></div>
+                </div>
+                <h4 class="font-headline-md text-primary mb-2 text-xl font-bold">Riku</h4>
+                <p class="font-label-caps text-secondary mb-4 text-xs tracking-wider">SHIBUYA KID</p>
+                <p class="text-body-sm text-on-surface-variant text-sm">The pulse of the neon. Riku knows the pop-up shops and underground clubs before they open.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Demo Video -->
+    <section class="py-stack-lg px-container-padding max-w-5xl mx-auto">
+        <div class="relative rounded-[2rem] overflow-hidden aspect-video border-8 border-surface-container-highest shadow-2xl group">
+            <div class="absolute inset-0 bg-surface-container flex items-center justify-center bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDwuVLg3734DpBNLWXHOdvaF-zzARNXPWE2gDzN6CVwquSMIU3QaKv0W3rNGrIgJR2AIGtWCxfyPmlCH8Y78xF9Cb63dV5ymH7oW9k1SSLgZfimbiPZhwgWF8UTLTUthOZeZSsCntiepyn9d6YdNsVtKtrRl5DEI94dDQi66N3KUUcjD8Kv3wIBRNm4mKbXjPdxm1b-yZKyeawMusHTgPlby-ljmZFF4qy3LcEDxmpE7WafV6NCfyG5rxWAo1wO64HCUmjHvsBq5OQc')">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-500"></div>
+                <a href="/app" class="relative z-10 w-24 h-24 bg-primary-container text-white rounded-full flex items-center justify-center vermilion-glow hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Tech Stack -->
+    <section class="py-stack-lg px-container-padding text-center">
+        <h4 class="font-label-caps text-on-surface-variant mb-8 tracking-[0.2em] text-sm">POWERED BY GOOGLE GEMINI AI</h4>
+        <div class="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+            <span class="px-4 py-2 rounded-full glass-card border border-primary/20 text-body-sm font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Gemini 3.5 Flash
+            </span>
+            <span class="px-4 py-2 rounded-full glass-card border border-primary/20 text-body-sm font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Managed Agents
+            </span>
+            <span class="px-4 py-2 rounded-full glass-card border border-primary/20 text-body-sm font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Google Maps Grounding
+            </span>
+            <span class="px-4 py-2 rounded-full glass-card border border-primary/20 text-body-sm font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Nano Banana
+            </span>
+            <span class="px-4 py-2 rounded-full glass-card border border-primary/20 text-body-sm font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Cloud Run
+            </span>
+        </div>
+    </section>
+
+    <!-- 9. Final CTA -->
+    <section class="py-24 relative overflow-hidden flex flex-col items-center justify-center px-container-padding">
+        <div class="absolute inset-0 opacity-20 pointer-events-none flex justify-center items-end">
+            <span class="material-symbols-outlined text-[400px] text-primary" style="font-variation-settings: 'FILL' 1;">temple_hindu</span>
+        </div>
+        <div class="relative z-10 text-center max-w-2xl">
+            <h2 class="font-display-lg text-4xl font-bold mb-8">Start your Tokyo pilgrimage.</h2>
+            <a href="/app" class="bg-primary-container text-on-primary-fixed text-headline-md px-12 py-5 rounded-full vermilion-glow hover:scale-105 transition-all shadow-[0_0_30px_rgba(250,91,66,0.5)] font-bold text-xl inline-flex items-center justify-center">
+                Launch Meguri App
+            </a>
+        </div>
+    </section>
+
+    <!-- 10. Footer -->
+    <footer class="py-12 bg-surface-container-lowest seigaiha-pattern px-container-padding border-t border-white/5">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">temple_hindu</span>
+                <span class="font-display-lg text-headline-md text-primary">Meguri</span>
+            </div>
+            <p class="text-body-sm text-on-surface-variant font-medium">Built at <span class="text-primary">AI Builders Gemini AI Hackathon 2026</span>, Tokyo.</p>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple micro-interaction for the "Collect Your Postcard" carousel
+        document.querySelectorAll('.snap-center').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('vermilion-glow');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('vermilion-glow');
+            });
+        });
+    </script>
+</body>
+</html>
