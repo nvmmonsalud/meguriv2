@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meguri 巡り — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Shippori+Mincho:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  /* Meguri design tokens (mirrored from the product) */
+  --surface:#14111e;
+  --surface-low:#1d1a27;
+  --surface-container:#211e2b;
+  --surface-high:#2b2636;
+  --surface-variant:#363341;
+  --primary:#ffb4a6;          /* soft coral */
+  --vermilion:#fa5b42;        /* primary-container */
+  --secondary:#f0c04d;        /* gold */
+  --tertiary:#c7bfff;         /* lavender */
+  --on-surface:#e7dff2;
+  --on-surface-variant:#e2beb8;
+  --outline:#aa8983;
+  --hairline:rgba(240,192,77,.28);
+
+  --font-display:'Zen Kaku Gothic New','Plus Jakarta Sans','Segoe UI',sans-serif;
+  --font-head:'Plus Jakarta Sans','Segoe UI',sans-serif;
+  --font-body:'Inter','Segoe UI',system-ui,sans-serif;
+  --font-story:'Shippori Mincho','Georgia',serif;
+
+  --asanoha:url("data:image/svg+xml,%3Csvg width='40' height='70' viewBox='0 0 40 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 11.547V34.641L20 46.188L0 34.641V11.547L20 0z' fill='none' stroke='%23ffffff' stroke-opacity='0.035'/%3E%3C/svg%3E");
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--surface);
+  color:var(--on-surface);
+  font-family:var(--font-body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- inline icon sprite ---------- */
+.gi{display:inline-block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;flex:none}
+
+/* ---------- Deck / stage ---------- */
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{
+  position:absolute;inset:0;
+  display:none;
+  padding:clamp(28px,5vw,84px);
+  opacity:0;
+  transform:translateY(14px) scale(.992);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.slide.active{display:flex;opacity:1;transform:none;animation:rise .55s ease}
+@keyframes rise{from{opacity:0;transform:translateY(16px) scale(.992)}to{opacity:1;transform:none}}
+
+/* ambient layers shared by all slides */
+.slide::before{content:"";position:absolute;inset:0;background-image:var(--asanoha);opacity:.9;pointer-events:none;z-index:0}
+.glowA,.glowB{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.glowA{width:48vw;height:48vw;background:rgba(250,91,66,.20);top:-14vw;right:-10vw}
+.glowB{width:40vw;height:40vw;background:rgba(199,191,255,.10);bottom:-16vw;left:-12vw}
+
+.inner{position:relative;z-index:2;width:100%;max-width:1180px;margin:auto}
+
+/* ---------- Shared type ---------- */
+.kicker{
+  font-family:var(--font-body);font-weight:700;font-size:clamp(11px,1.05vw,13px);
+  letter-spacing:.26em;text-transform:uppercase;color:var(--secondary);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.kicker::before{content:"";width:26px;height:2px;background:var(--secondary);opacity:.8;display:inline-block}
+h1.title{font-family:var(--font-display);font-weight:900;line-height:1.02;letter-spacing:-.02em;font-size:clamp(40px,7vw,98px)}
+h2.head{font-family:var(--font-display);font-weight:900;line-height:1.05;letter-spacing:-.02em;font-size:clamp(30px,4.6vw,60px)}
+.accent{color:var(--primary);text-shadow:0 0 28px rgba(250,91,66,.35)}
+.story{font-family:var(--font-story);font-style:italic;color:var(--secondary);font-size:clamp(16px,2vw,26px);line-height:1.5}
+.lead{color:rgba(231,223,242,.82);font-size:clamp(15px,1.5vw,20px);line-height:1.6}
+.kanji-wm{position:absolute;font-family:var(--font-display);font-weight:900;color:rgba(255,180,166,.05);font-size:46vh;line-height:.8;z-index:1;pointer-events:none;user-select:none}
+
+/* glass card */
+.card{
+  background:linear-gradient(180deg,rgba(43,38,54,.78),rgba(33,28,48,.72));
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.06);
+  border-top:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  box-shadow:0 18px 50px -28px rgba(0,0,0,.8);
+}
+
+/* ---------- Slide 1: Title ---------- */
+.s1 .inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(14px,2vw,26px)}
+.torii{color:var(--primary);filter:drop-shadow(0 0 18px rgba(250,91,66,.5))}
+.torii .gi{width:clamp(44px,5vw,64px);height:clamp(44px,5vw,64px);stroke-width:1.5}
+.brand{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,3vw,40px);letter-spacing:-.01em;color:var(--primary)}
+.brand small{font-weight:500;opacity:.6}
+.s1 .sub{max-width:760px}
+.pillrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;font-size:clamp(11px,1vw,13px);font-weight:600;color:var(--on-surface-variant);background:rgba(33,28,48,.7);border:1px solid var(--hairline)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--vermilion);box-shadow:0 0 10px var(--vermilion)}
+.hint{margin-top:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--outline);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:.9}}
+
+/* ---------- Generic two-column ---------- */
+.grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,3.4vw,56px);align-items:center}
+.stack{display:flex;flex-direction:column;gap:clamp(14px,1.8vw,22px)}
+
+/* problem cards */
+.painrow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+.pain{padding:20px;border-radius:18px;background:rgba(29,26,39,.7);border:1px solid rgba(255,255,255,.05)}
+.pain .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(250,91,66,.14);color:var(--primary);margin-bottom:12px}
+.pain h4{font-family:var(--font-head);font-weight:700;font-size:clamp(15px,1.4vw,19px);margin-bottom:6px}
+.pain p{font-size:clamp(12px,1.1vw,14.5px);color:rgba(231,223,242,.72);line-height:1.5}
+
+.stat{padding:clamp(22px,2.6vw,34px);border-radius:22px;text-align:center}
+.stat .big{font-family:var(--font-display);font-weight:900;font-size:clamp(54px,9vw,124px);line-height:.92;color:var(--secondary);letter-spacing:-.03em}
+.stat .lbl{font-size:clamp(12px,1.2vw,15px);color:var(--on-surface-variant);margin-top:10px;line-height:1.5}
+.stat .src{font-size:11px;color:var(--outline);margin-top:14px;letter-spacing:.04em}
+
+/* solution loop */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.step{position:relative;padding:18px 16px;border-radius:18px;background:rgba(29,26,39,.7);border:1px solid rgba(255,255,255,.05)}
+.step .n{font-family:var(--font-head);font-weight:800;font-size:13px;color:var(--vermilion);letter-spacing:.08em}
+.step .ic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(240,192,77,.12);border:1px solid rgba(240,192,77,.4);color:var(--secondary);margin:10px 0}
+.step h4{font-family:var(--font-head);font-weight:700;font-size:clamp(14px,1.3vw,17px);margin-bottom:5px}
+.step p{font-size:clamp(11px,1.05vw,13.5px);color:rgba(231,223,242,.7);line-height:1.45}
+.step:not(:last-child)::after{content:"";position:absolute;right:-11px;top:50%;width:14px;height:14px;transform:translateY(-50%) rotate(45deg);border-top:2px solid var(--vermilion);border-right:2px solid var(--vermilion);z-index:3}
+
+/* phone mockup */
+.phone{position:relative;width:min(300px,30vw);aspect-ratio:9/19;border-radius:42px;border:9px solid var(--surface-high);overflow:hidden;box-shadow:0 40px 90px -40px rgba(0,0,0,.9), 0 0 60px -10px rgba(250,91,66,.3);margin:0 auto;background:linear-gradient(160deg,#241a2e,#14111e)}
+.phone::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 60% at 50% 0,rgba(250,91,66,.22),transparent 60%),var(--asanoha)}
+.phone .scr{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;z-index:2}
+.phone .map{position:absolute;inset:0;background:radial-gradient(60% 40% at 30% 30%,rgba(199,191,255,.18),transparent),radial-gradient(50% 40% at 75% 65%,rgba(240,192,77,.18),transparent),linear-gradient(160deg,#241a30,#15121f)}
+.phone .pin{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--vermilion);box-shadow:0 0 0 6px rgba(250,91,66,.25),0 0 16px var(--vermilion)}
+.phone .qbar{background:rgba(20,17,30,.82);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;backdrop-filter:blur(6px)}
+.phone .qbar b{font-family:var(--font-head);font-weight:700;font-size:13px;color:var(--primary);display:block}
+.phone .qbar span{font-size:11px;color:rgba(231,223,242,.7)}
+.phone img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1}
+.floaty{animation:floaty 7s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(1.5deg)}50%{transform:translateY(-16px) rotate(-1deg)}}
+
+/* engine list */
+.feat{display:flex;gap:14px;align-items:flex-start}
+.feat .ic{flex:none;width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:rgba(199,191,255,.12);color:var(--tertiary)}
+.feat h4{font-family:var(--font-head);font-weight:700;font-size:clamp(15px,1.4vw,18px);margin-bottom:3px}
+.feat p{font-size:clamp(12px,1.15vw,15px);color:rgba(231,223,242,.72);line-height:1.45}
+
+/* guides */
+.guides{display:flex;gap:14px;margin-top:4px}
+.guide{flex:1;text-align:center;padding:16px 10px;border-radius:18px;background:rgba(29,26,39,.6);border:1px solid rgba(255,255,255,.05)}
+.guide .av{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;overflow:hidden;border:2px solid var(--vermilion);background:linear-gradient(160deg,#3a2740,#1d1a27);position:relative;display:flex;align-items:center;justify-content:center;color:var(--primary)}
+.guide .av img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.guide.g2 .av{border-color:var(--secondary);color:var(--secondary)}
+.guide.g3 .av{border-color:var(--tertiary);color:var(--tertiary)}
+.guide h5{font-family:var(--font-head);font-weight:700;font-size:clamp(13px,1.2vw,16px)}
+.guide span{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--secondary)}
+
+.techbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.tech{display:inline-flex;align-items:center;gap:8px;padding:8px 15px;border-radius:999px;font-size:clamp(11px,1.05vw,13.5px);font-weight:600;color:var(--on-surface);background:rgba(20,17,30,.6);border:1px solid rgba(255,180,166,.22)}
+.tech .dot{width:6px;height:6px;border-radius:50%;background:var(--primary)}
+
+/* market / ask slide */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+.mc{padding:22px;border-radius:18px;background:rgba(29,26,39,.7);border:1px solid rgba(255,255,255,.05)}
+.mc .big{font-family:var(--font-display);font-weight:900;font-size:clamp(30px,3.6vw,50px);color:var(--secondary);line-height:1;letter-spacing:-.02em}
+.mc h4{font-family:var(--font-head);font-weight:700;font-size:clamp(13px,1.2vw,16px);margin:10px 0 5px}
+.mc p{font-size:clamp(11.5px,1.05vw,14px);color:rgba(231,223,242,.7);line-height:1.5}
+.ask{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;margin-top:8px;padding:clamp(18px,2.2vw,28px);border-radius:22px;border:1px solid var(--hairline);background:linear-gradient(120deg,rgba(250,91,66,.12),rgba(199,191,255,.06))}
+.ask .cta{font-family:var(--font-display);font-weight:900;font-size:clamp(22px,2.6vw,38px);letter-spacing:-.01em}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--vermilion);color:#fff;font-weight:700;padding:14px 26px;border-radius:999px;font-size:clamp(13px,1.2vw,16px);box-shadow:0 0 30px rgba(250,91,66,.45)}
+.btn .gi{width:18px;height:18px}
+
+/* ---------- chrome: progress, counter, nav ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 26px;pointer-events:none}
+.wm{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:700;color:var(--primary);font-size:15px;letter-spacing:.02em;opacity:.9}
+.wm .gi{width:20px;height:20px}
+.wm small{color:var(--outline);font-family:var(--font-body);font-weight:600;letter-spacing:.22em;font-size:10px;text-transform:uppercase}
+.progress{position:fixed;top:0;left:0;height:3px;width:var(--progress,20%);background:linear-gradient(90deg,var(--vermilion),var(--secondary));z-index:40;transition:width .5s ease;box-shadow:0 0 12px rgba(250,91,66,.6)}
+.counter{font-family:var(--font-head);font-weight:700;font-size:13px;color:var(--on-surface-variant);letter-spacing:.1em}
+.nav{position:fixed;bottom:20px;right:24px;z-index:30;display:flex;align-items:center;gap:10px}
+.dots{display:flex;gap:8px;margin-right:6px}
+.dots b{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:.3s;display:block}
+.dots b.on{background:var(--vermilion);box-shadow:0 0 10px var(--vermilion);transform:scale(1.15)}
+.arrow{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(33,28,48,.7);color:var(--on-surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;backdrop-filter:blur(6px)}
+.arrow:hover{border-color:var(--vermilion);color:var(--primary)}
+.footnote{position:fixed;bottom:22px;left:26px;z-index:30;font-size:11px;color:var(--outline);letter-spacing:.04em}
+
+/* slide 3 density tuning so it fits 16:9 at 1280x720 */
+.s3 .stack{gap:clamp(12px,1.5vw,18px)}
+.s3 h2.head{font-size:clamp(28px,4.2vw,52px)}
+.s3 .lead{font-size:clamp(14px,1.35vw,18px)}
+.s3 .step{padding:15px 14px}
+.s3 .step .ic{width:42px;height:42px;margin:8px 0}
+
+/* ---------- responsive ---------- */
+@media (max-width:880px){
+  .grid2{grid-template-columns:1fr}
+  .painrow,.loop,.cols3{grid-template-columns:1fr 1fr}
+  .phone{display:none}
+  .kanji-wm{font-size:38vh}
+}
+
+/* ---------- print → PDF (landscape) ---------- */
+@media print{
+  @page{size:1280px 720px;margin:0}
+  body{overflow:visible}
+  .topbar,.nav,.footnote,.progress,.hint{display:none!important}
+  .deck{display:block!important;position:static}
+  .slide{display:flex!important;position:relative;inset:auto;opacity:1!important;transform:none!important;page-break-after:always;break-after:page;height:720px;width:1280px;overflow:hidden;animation:none}
+  .slide:last-child{page-break-after:auto;break-after:auto}
+  .glowA,.glowB{filter:blur(90px)}
+}
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-torii" viewBox="0 0 24 24"><path d="M2.5 5.5c3-1.6 16-1.6 19 0M4 9h16M6.5 9v12M17.5 9v12M3 9V6.2M21 9V6.2"/></symbol>
+    <symbol id="i-groups" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3.3 2.5-6 5.5-6s5.5 2.7 5.5 6"/><path d="M16 6.2A2.8 2.8 0 0117 11.6"/><path d="M16.5 14.2c2.3.3 4 2.5 4 5.8"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.6 4 5.1V19c3-.5 6-.1 8 1.4 2-1.5 5-1.9 8-1.4V5.1c-3-.5-6-.1-8 1.4z"/><path d="M12 6.5v14"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.2 5-5 2.2 2.2-5z"/></symbol>
+    <symbol id="i-personsearch" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.2"/><path d="M4 20c0-3.3 2.7-6 6-6 1 0 1.9.2 2.7.6"/><circle cx="16.5" cy="16" r="3"/><path d="M18.8 18.3L21.5 21"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8.5V6a2 2 0 012-2h2.5M20 8.5V6a2 2 0 00-2-2h-2.5M4 15.5V18a2 2 0 002 2h2.5M20 15.5V18a2 2 0 01-2 2h-2.5"/><path d="M3.5 12h17"/></symbol>
+    <symbol id="i-postcard" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16.5l-4.5-4.5L9 19.5"/></symbol>
+    <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.8 13.4L7.5 21l4.5-2.6L16.5 21l-1.3-7.6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2.4"/><path d="M3.5 9.5h17M8 3.2v3.6M16 3.2v3.6"/></symbol>
+    <symbol id="i-stack" viewBox="0 0 24 24"><rect x="8" y="3.5" width="12.5" height="12.5" rx="2.4"/><path d="M3.5 7.5V18a2.5 2.5 0 002.5 2.5H16"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M12 3c3.2 2.2 5 5.4 5 9.5l-1.7 4.5H8.7L7 12.5C7 8.4 8.8 5.2 12 3z"/><circle cx="12" cy="10" r="1.6"/><path d="M8.7 17l-2.6 2.8M15.3 17l2.6 2.8"/></symbol>
+    <symbol id="i-fox" viewBox="0 0 24 24"><path d="M4 5l3.5 3M20 5l-3.5 3M4 5c0 6 1.5 9.5 8 13 6.5-3.5 8-7 8-13"/><path d="M9.5 12.5h.01M14.5 12.5h.01M12 15.5l-1.2 1h2.4z"/></symbol>
+    <symbol id="i-tea" viewBox="0 0 24 24"><path d="M5 9h12v4a5 5 0 01-5 5H10a5 5 0 01-5-5z"/><path d="M17 10h1.5a2.5 2.5 0 010 5H17"/><path d="M8 3c-.6 1 .6 2 0 3M12 3c-.6 1 .6 2 0 3"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-1 8 8-10h-6z"/></symbol>
+    <symbol id="i-chevL" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+    <symbol id="i-chevR" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  </defs>
+</svg>
+
+<div class="progress"></div>
+
+<div class="topbar">
+  <div class="wm"><svg class="gi"><use href="#i-torii"/></svg>Meguri <small>Pitch</small></div>
+  <div class="counter" id="counter">1 / 5</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ============ SLIDE 1 — TITLE ============ -->
+  <section class="slide s1 active">
+    <div class="glowA"></div><div class="glowB"></div>
+    <div class="kanji-wm" style="right:4vw;bottom:-4vh">巡</div>
+    <div class="inner">
+      <div class="torii"><svg class="gi"><use href="#i-torii"/></svg></div>
+      <h1 class="title">Tokyo is hiding something.<br><span class="accent">Let's go find it.</span></h1>
+      <p class="story sub">An AI spirit-guide. Real quests. A postcard for every discovery.</p>
+      <div class="brand">Meguri <small>巡り</small></div>
+      <div class="pillrow">
+        <span class="pill"><span class="dot"></span>Location-based quest game</span>
+        <span class="pill"><span class="dot"></span>Mobile-web · no install</span>
+        <span class="pill"><span class="dot"></span>Powered by Google Gemini</span>
+      </div>
+      <div class="hint">Press → or space to advance</div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 2 — PROBLEM ============ -->
+  <section class="slide">
+    <div class="glowA"></div><div class="glowB"></div>
+    <div class="inner grid2">
+      <div class="stack">
+        <span class="kicker">The Problem</span>
+        <h2 class="head">37&nbsp;million visitors.<br><span class="accent">The same ten photos.</span></h2>
+        <p class="lead">Tokyo is having a record tourism boom — but everyone funnels into the same handful of crossings and towers. The <strong style="color:var(--secondary)">real</strong> city stays invisible: the moss-covered shrine behind the vending machine, the vinyl bar with no sign, the story only the wind remembers.</p>
+        <div class="painrow">
+          <div class="pain">
+            <div class="ic"><svg class="gi"><use href="#i-groups"/></svg></div>
+            <h4>Tourist traps</h4>
+            <p>Crowded, generic spots — discovery flattened into a checklist.</p>
+          </div>
+          <div class="pain">
+            <div class="ic"><svg class="gi"><use href="#i-book"/></svg></div>
+            <h4>Static guidebooks</h4>
+            <p>Lists that don't know who you are, where you stand, or what's near.</p>
+          </div>
+          <div class="pain">
+            <div class="ic"><svg class="gi"><use href="#i-compass"/></svg></div>
+            <h4>No reason to wander</h4>
+            <p>Nothing rewards curiosity, so visitors never leave the main drag.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card stat">
+        <div class="big">~80%</div>
+        <div class="lbl">of inbound spend concentrates in a few dense districts, while neighborhood culture and local shops go unseen.</div>
+        <div class="src">Illustrative · Japan inbound at a record ~36.9M in 2024 (JNTO)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 3 — SOLUTION ============ -->
+  <section class="slide s3">
+    <div class="glowA"></div><div class="glowB"></div>
+    <div class="inner grid2">
+      <div class="stack">
+        <span class="kicker">The Solution</span>
+        <h2 class="head">Meguri turns the city into a <span class="accent">living quest.</span></h2>
+        <p class="lead">A 400-year-old fox spirit leads you off the tourist path — each quest anchored to a real Google Maps place, verified on arrival, and rewarded with a unique ukiyo-e postcard.</p>
+        <div class="loop">
+          <div class="step"><div class="n">01</div><div class="ic"><svg class="gi"><use href="#i-personsearch"/></svg></div><h4>Choose a guide</h4><p>An AI companion with its own voice.</p></div>
+          <div class="step"><div class="n">02</div><div class="ic"><svg class="gi"><use href="#i-compass"/></svg></div><h4>Get a quest</h4><p>A cryptic hook to a real place.</p></div>
+          <div class="step"><div class="n">03</div><div class="ic"><svg class="gi"><use href="#i-scan"/></svg></div><h4>Walk &amp; scan</h4><p>GPS or camera confirms arrival.</p></div>
+          <div class="step"><div class="n">04</div><div class="ic"><svg class="gi"><use href="#i-postcard"/></svg></div><h4>Collect</h4><p>Mint a generative postcard.</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="phone floaty">
+          <div class="map"></div>
+          <span class="pin" style="left:30%;top:34%"></span>
+          <span class="pin" style="left:62%;top:52%;background:var(--secondary);box-shadow:0 0 0 6px rgba(240,192,77,.22),0 0 16px var(--secondary)"></span>
+          <span class="pin" style="left:46%;top:70%;background:var(--tertiary);box-shadow:0 0 0 6px rgba(199,191,255,.22),0 0 16px var(--tertiary)"></span>
+          <img alt="Meguri app: a stylized Tokyo map with glowing quest markers and a fox-spirit guide" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVrNg3pteWhD7oS6rBxsCUfGf_DKsqpCSzj97Rm5rj0EV0dDL62YKRjBf2ZeTrj_TZE0fvKD9XSBo1uAzbowOv3lNjXwdq3reZJagomKCRQjUR3WPZK-xcnw4hb36p0pegtRUvkKQTDXMUQuL2YCZn6Uj-uJoTTysiMvqJ6NX5W8XSCHE0NTil7wif5GqKjDr8Gpb0qf_AEFGMdXroW8IWFW2_RtrVW6nMGHvQhflJ7hJwFNplLNeptjSE0C4AXzJkdb0aswYyk9xM" loading="lazy" onerror="this.style.display='none'" />
+          <div class="scr">
+            <div class="qbar"><b>The Neon Shrine ⛩</b><span>2 min walk · 150m · +150 XP</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 4 — WHY IT WORKS ============ -->
+  <section class="slide">
+    <div class="glowA"></div><div class="glowB"></div>
+    <div class="kanji-wm" style="left:-2vw;top:-6vh;color:rgba(199,191,255,.05)">遊</div>
+    <div class="inner grid2">
+      <div class="stack">
+        <span class="kicker">Why It Works</span>
+        <h2 class="head">A reason to <span class="accent">keep walking.</span></h2>
+        <div class="feat"><div class="ic"><svg class="gi"><use href="#i-medal"/></svg></div><div><h4>Progression that hooks</h4><p>XP, levels, and <strong style="color:var(--secondary)">Kakera</strong> currency. Difficulty scales — famous spots early, genuinely hidden ones later.</p></div></div>
+        <div class="feat"><div class="ic"><svg class="gi"><use href="#i-calendar"/></svg></div><div><h4>Daily quests &amp; streaks</h4><p>A fresh reason to open the app and explore one more block, every day.</p></div></div>
+        <div class="feat"><div class="ic"><svg class="gi"><use href="#i-stack"/></svg></div><div><h4>Collectible ukiyo-e postcards</h4><p>Each discovery mints a unique generative artwork — a passport you actually want to fill.</p></div></div>
+        <div class="feat"><div class="ic"><svg class="gi"><use href="#i-groups"/></svg></div><div><h4>Co-op parties</h4><p>Quest with friends in real time — social pull turns walks into shared adventures.</p></div></div>
+      </div>
+      <div class="stack">
+        <div class="card" style="padding:18px 18px 20px">
+          <span class="kicker" style="margin-bottom:12px;display:inline-flex">Meet your guides</span>
+          <div class="guides">
+            <div class="guide g1"><div class="av"><svg class="gi" style="width:30px;height:30px"><use href="#i-fox"/></svg><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt4GKZBEXMgCJIJ8U6fqHjTvgVT_dYTYiS1yGDsm83c3srtD25RyUTeVpARH6I8LPM4csOWaTM-7Qe8ChFW-RK-AHxYM1ghGpJrNysbwwXU5FUTnl3LrhFTczEB-sLHPHjCWlu3K1_EZv282CdGMO16sTf3vnIIBN7vrgnuf0BURJ9W0LTnmrScGJxfMCkpVJw5cMCLYPQfEn7SayU9KB261Yte3K4yrDM0mNKLKc2UxQlBmofJj8aBrpvXa6agfBHhOKmQSdW2UTk" alt="Kohaku" loading="lazy" onerror="this.style.display='none'"></div><h5>Kohaku</h5><span>Fox-spirit</span></div>
+            <div class="guide g2"><div class="av"><svg class="gi" style="width:30px;height:30px"><use href="#i-tea"/></svg><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgsDTAz60XUo1dvlJVnyd61O3jWULakrKy7z9yy-K20Zfvd6xr5nYli7YjBWmpQTY_CYAWrJxWUqL74QoK0ZqiYZH_-L6hsnmiq3efOb1QBTEIBTK1wUXRN7qGZz48K4X37KpFs3y0KWqwEuvBBLiQDg59l9RmIvKCxqSD5a5GO-mcQ_3nz1p9vIONv5FXvlncWyWp21ZAtqMcNReovwMAKaQRSJ-IgnNtL5hXYrFueZW0fxWj0Jijqj0FETEV5i3GEpJUlTyhojL_" alt="Sen" loading="lazy" onerror="this.style.display='none'"></div><h5>Sen</h5><span>Tea-master</span></div>
+            <div class="guide g3"><div class="av"><svg class="gi" style="width:30px;height:30px"><use href="#i-bolt"/></svg><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK4neR4QOwKmKWbEPv4uf_7n09Us7UInkdlHjUT2-qfrGRIKQNQqDm8pha8W1TrfYgkJjKIwqzGwNMBb7kwmN20lEp7oisCyRVa_UTVq8hJE-NjtbLfXchOz1FnkvT7QokKzZlt3SxmEt37_Ba7DUfKJB4MQHgKMY5eMwXCllwEpflJoZ-3PEpaCMRc62_i2Hcf29icfMBbd-cnzrtL1yX5l60qYRLISBOG3IM8DRKMGnbkOU9h2fbvtDq7Ca-COEn8QS8KLkXgevL" alt="Riku" loading="lazy" onerror="this.style.display='none'"></div><h5>Riku</h5><span>Shibuya kid</span></div>
+          </div>
+        </div>
+        <div>
+          <span class="kicker" style="margin-bottom:10px;display:inline-flex">Built on a modern AI stack</span>
+          <div class="techbar">
+            <span class="tech"><span class="dot"></span>Gemini</span>
+            <span class="tech"><span class="dot"></span>Maps Grounding</span>
+            <span class="tech"><span class="dot"></span>Nano Banana image gen</span>
+            <span class="tech"><span class="dot"></span>Managed Agents</span>
+            <span class="tech"><span class="dot"></span>Cloud Run · Firebase</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 5 — MARKET + ASK ============ -->
+  <section class="slide">
+    <div class="glowA"></div><div class="glowB"></div>
+    <div class="kanji-wm" style="right:2vw;bottom:-8vh">道</div>
+    <div class="inner stack">
+      <span class="kicker">Market &amp; The Ask</span>
+      <h2 class="head">Tokyo today. <span class="accent">Every city tomorrow.</span></h2>
+      <p class="lead" style="max-width:880px">The quest engine is city-agnostic: real places + an AI guide + collectible art travels anywhere tourists do. We start in the world's most-visited new destination and template outward.</p>
+      <div class="cols3">
+        <div class="mc"><div class="big">60M</div><h4>Japan's 2030 target</h4><p>Annual inbound visitors the government is steering toward — Tokyo is the #1 gateway.</p></div>
+        <div class="mc"><div class="big">$1T+</div><h4>Experiential travel</h4><p>Gamified, in-the-moment exploration is the fastest-growing slice of global tourism.</p></div>
+        <div class="mc"><div class="big">3 ways</div><h4>To monetize</h4><p>Premium city &amp; guide packs · sponsored quest stops (shops &amp; shrines) · tourism-board licensing.</p></div>
+      </div>
+      <div class="ask">
+        <div class="cta">Start your Tokyo pilgrimage.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <span class="btn"><svg class="gi"><use href="#i-rocket"/></svg>Launch Meguri</span>
+          <span style="font-size:12px;color:var(--on-surface-variant)">Seeking design partners &amp; pre-seed to reach <strong style="color:var(--secondary)">5 cities by 2027</strong>.</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--outline);letter-spacing:.04em">Built at the AI Builders Gemini AI Hackathon 2026 · Tokyo &nbsp;·&nbsp; Market figures illustrative (JNTO / Japan Tourism Agency).</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="footnote" id="footnote">← → navigate · F fullscreen · P print/PDF</div>
+<div class="nav">
+  <div class="dots" id="dots"></div>
+  <div class="arrow" id="prev"><svg class="gi"><use href="#i-chevL"/></svg></div>
+  <div class="arrow" id="next"><svg class="gi"><use href="#i-chevR"/></svg></div>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const counter=document.getElementById('counter');
+  const dotsWrap=document.getElementById('dots');
+  const progress=document.querySelector('.progress');
+  let i=0;
+
+  slides.forEach((_,n)=>{
+    const b=document.createElement('b');
+    b.addEventListener('click',()=>show(n));
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+    progress.style.width=(slides.length===1?100:(i/(slides.length-1))*100)+'%';
+  }
+  const next=()=>show(i+1), prev=()=>show(i-1);
+
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+
+  window.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Spacebar'].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='Home'){show(0);}
+    else if(e.key==='End'){show(slides.length-1);}
+    else if(/^[1-9]$/.test(e.key)){show(parseInt(e.key,10)-1);}
+    else if(e.key==='f'||e.key==='F'){toggleFs();}
+    else if(e.key==='p'||e.key==='P'){window.print();}
+  });
+
+  function toggleFs(){
+    if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+    else{document.exitFullscreen&&document.exitFullscreen();}
+  }
+
+  // swipe support
+  let x0=null;
+  window.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+  window.addEventListener('touchend',e=>{
+    if(x0===null)return;
+    const dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>50){dx<0?next():prev();}
+    x0=null;
+  },{passive:true});
+
+  show(0);
+})();
+</script>
+</body>
+</html>
