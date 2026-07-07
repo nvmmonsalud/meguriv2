@@ -1,24 +1,28 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper to check if user is authenticated (or just allow any visitor for demo/anon play)
-    function isAuthenticated() {
-      return true; // We allow simple client-side mock registration and ID generation for smooth onboarding in the iframe
+    function signedIn() {
+      return request.auth != null;
     }
 
-    // Rules for players
+    function owns(playerId) {
+      return signedIn() && request.auth.uid == playerId;
+    }
+
     match /players/{playerId} {
-      allow read, write: if true;
-      
-      // Passport items
+      allow create, read, update, delete: if owns(playerId);
+
       match /passport/{postcardId} {
-        allow read, write: if true;
+        allow create, read, update, delete: if owns(playerId);
       }
     }
 
-    // Rules for parties
     match /parties/{partyId} {
-      allow read, write: if true;
+      allow create: if signedIn()
+        && request.resource.data.leaderId == request.auth.uid
+        && request.resource.data.members is list;
+      allow read: if signedIn();
+      allow update, delete: if signedIn() && resource.data.leaderId == request.auth.uid;
     }
   }
 }

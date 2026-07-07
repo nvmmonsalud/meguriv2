@@ -15,9 +15,10 @@ interface ShibuyaMapProps {
   onDailyQuestTrigger?: (type: "complete_quest" | "chat_guide" | "visit_any" | "generate_quest", targetId?: string) => void;
   onForceResetDailyQuests?: () => void;
   onTestLevelUp?: () => void;
+  demoMode?: boolean;
 }
 
-export default function ShibuyaMap({ player, guide, onSelectQuest, completedQuests, quests, onFindQuests, isGeneratingQuests, onForceResetDailyQuests, onTestLevelUp }: ShibuyaMapProps) {
+export default function ShibuyaMap({ player, guide, onSelectQuest, completedQuests, quests, onFindQuests, isGeneratingQuests, onForceResetDailyQuests, onTestLevelUp, demoMode = false }: ShibuyaMapProps) {
   const [nearestQuest, setNearestQuest] = useState<Quest>(quests[1] || quests[0] || QUESTS[1]);
   const [showDailyPanel, setShowDailyPanel] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
@@ -129,6 +130,17 @@ export default function ShibuyaMap({ player, guide, onSelectQuest, completedQues
             <span className="text-base font-serif font-black text-gold tracking-wide leading-none uppercase">Meguri</span>
             <span className="text-xs text-cream/70">Exploring Shibuya</span>
           </div>
+        </div>
+
+        <div className="hidden sm:flex items-center gap-2">
+          <span className="px-3 py-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/10 text-emerald-300 text-[10px] font-mono font-bold tracking-widest uppercase">
+            Gemini + Maps Ready
+          </span>
+          {demoMode && (
+            <span className="px-3 py-1.5 rounded-full border border-crimson/40 bg-crimson/15 text-crimson text-[10px] font-mono font-bold tracking-widest uppercase">
+              Demo Mode
+            </span>
+          )}
         </div>
 
         {/* Currency display */}

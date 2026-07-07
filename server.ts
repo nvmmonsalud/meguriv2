@@ -12,6 +12,11 @@ dotenv.config();
 // Initialize Express
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
+const DEMO_MODE = process.env.DEMO_MODE === "true" || process.env.VITE_DEMO_MODE === "true";
+
+function getAiMode() {
+  return ai ? "live-gemini" : "fallback-demo";
+}
 
 // Increase payload size limit to accept base64 camera images
 app.use(express.json({ limit: "15mb" }));
@@ -25,7 +30,8 @@ app.get("/healthz", (_req: Request, res: Response) => {
   res.json({
     ok: true,
     service: "meguri",
-    aiMode: apiKey ? "gemini" : "fallback",
+    aiMode: getAiMode(),
+    demoMode: DEMO_MODE,
     timestamp: new Date().toISOString()
   });
 });
@@ -915,8 +921,40 @@ app.post("/api/guide-chat", async (req, res) => {
   }
 
   if (!ai) {
+    const lowerMessage = String(message).toLowerCase();
+    const isRamen = lowerMessage.includes("ramen") || lowerMessage.includes("food") || lowerMessage.includes("eat");
+    const isSanctuary = lowerMessage.includes("shrine") || lowerMessage.includes("sanctuary") || lowerMessage.includes("quiet");
+    const recommendation = isRamen
+      ? {
+          title: "Ichiran Shibuya",
+          label: "LEGENDARY RAMEN",
+          rating: "4.4",
+          votes: "10k+ travelers",
+          distance: "450m away",
+          description: "A focused tonkotsu ramen booth experience near the Shibuya flow — perfect for a quick food quest.",
+          latitude: 35.6609,
+          longitude: 139.6999,
+          placeId: "demo-ichiran-shibuya"
+        }
+      : isSanctuary
+        ? {
+            title: "Konno Hachimangu Shrine",
+            label: "QUIET SANCTUARY",
+            rating: "4.3",
+            votes: "1k+ pilgrims",
+            distance: "900m away",
+            description: "A calmer shrine tucked beyond Shibuya's neon pressure, ideal for a reflective spirit quest.",
+            latitude: 35.6556,
+            longitude: 139.7045,
+            placeId: "demo-konno-hachimangu"
+          }
+        : null;
+
     return res.json({
-      reply: `[Fallback Mode] Oh, my ethereal voice is a bit muffled without our key connection! But I hear you whisper: "${message}". Keep walking, traveler!`,
+      reply: recommendation
+        ? `[Fallback Mode] My live Maps thread is sleeping, but Kohaku still has a judge-safe lead: ${recommendation.title}. I can shape this into a quest right now.`
+        : `[Fallback Mode] Oh, my ethereal voice is a bit muffled without our key connection! But I hear you whisper: "${message}". Keep walking, traveler!`,
+      recommendation
     });
   }
 
