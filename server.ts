@@ -1,6 +1,6 @@
 import express from "express";
+import type { Request, Response } from "express";
 import path from "path";
-import { fileURLToPath } from "url";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
@@ -9,12 +9,9 @@ import fs from "fs";
 // Load environment variables
 dotenv.config();
 
-const __filename = typeof import.meta?.url === "string" ? fileURLToPath(import.meta.url) : (typeof (global as any).__filename !== "undefined" ? (global as any).__filename : "");
-const __dirname = typeof (global as any).__dirname !== "undefined" ? (global as any).__dirname : (__filename ? path.dirname(__filename) : process.cwd());
-
 // Initialize Express
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 // Increase payload size limit to accept base64 camera images
 app.use(express.json({ limit: "15mb" }));
@@ -22,6 +19,16 @@ app.use(express.json({ limit: "15mb" }));
 // Initialize Gemini API Client
 const apiKey = process.env.GEMINI_API_KEY;
 let ai: GoogleGenAI | null = null;
+
+// Lightweight readiness check for deploy platforms and smoke tests.
+app.get("/healthz", (_req: Request, res: Response) => {
+  res.json({
+    ok: true,
+    service: "meguri",
+    aiMode: apiKey ? "gemini" : "fallback",
+    timestamp: new Date().toISOString()
+  });
+});
 
 if (apiKey) {
   ai = new GoogleGenAI({

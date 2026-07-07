@@ -56,7 +56,7 @@ export async function initializeUserAuth() {
     console.log("Meguri anonymous authentication successful:", userCredential.user.uid);
     return userCredential.user.uid;
   } catch (error) {
-    console.error("Firebase anonymous auth failed, creating mock playerId:", error);
+    console.warn("Firebase anonymous auth failed, creating mock playerId:", error);
     // Secure fallback local storage playerId so offline-first or dev plays never crash
     let localId = localStorage.getItem("meguri_local_player_id");
     if (!localId) {
