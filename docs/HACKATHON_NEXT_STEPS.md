@@ -1,88 +1,70 @@
-# Meguri Hackathon Next Steps
+# Meguri v2 — Hackathon next steps
 
-## Current position
+## Verdict
 
-Meguri is already a working hackathon prototype. It has the core loop judges need to understand in under two minutes:
+Continue Meguri for the next Entertainment / Experimental AI hackathon. The strongest angle is:
 
-1. Pick an AI spirit guide.
-2. Receive a location-based quest around Shibuya.
-3. Verify arrival using camera/GPS.
-4. Earn an ukiyo-e postcard reward.
-5. Continue with guide chat and social/party hooks.
+> Pokémon GO meets a Tokyo spirit-guide, powered by Gemini Maps, vision, and image generation.
 
-The next work is demo reliability and judge clarity, not a broad feature expansion.
+## Judge-proof 90-second script
 
-## Day 0: must-do before submitting
+**0–10s — Hook**
+- Open landing page.
+- Say: “Tokyo is full of hidden stories. Meguri turns a walk into an AI-guided quest.”
+- Click **Judge Demo Mode**.
 
-- [ ] Deploy the app publicly.
-- [ ] Add `GEMINI_API_KEY` to the deployment environment.
+**10–25s — Persona**
+- Show Kohaku loaded as the fox-spirit guide.
+- Point out guide voice/personality and the Shibuya map.
+
+**25–45s — AI quest generation**
+- Hit **Find Quests**.
+- Explain: “With a Gemini key, this uses Maps/Search grounding to find real nearby places and write lore.”
+- Open a quest and show route, checklist, rewards.
+
+**45–65s — Guide chat → quest**
+- Go to **Guide**.
+- Ask: “Is there any legendary ramen nearby?” or “Where is a quiet sanctuary here?”
+- Use **Quest Me There** on the recommendation card.
+
+**65–80s — Multimodal verification**
+- Start the quest.
+- Show camera/GPS check-in.
+- Explain Gemini vision verifies landmarks; GPS fallback keeps the stage demo reliable.
+
+**80–90s — Reward loop**
+- Show ukiyo-e postcard generation and **Archive** / Tokyo Passport.
+- Close: “Tokyo today, every city tomorrow.”
+
+## Day 0 checklist
+
+- [ ] Deploy Render Blueprint from `render.yaml`.
+- [ ] Add `GEMINI_API_KEY` on Render.
 - [ ] Set `APP_URL` to the deployed URL.
-- [ ] Enable Firebase **Anonymous** sign-in for real player IDs.
-- [ ] Verify `/healthz` returns `ok: true` on the live deployment.
-- [ ] Run the full judge path once from a clean browser profile.
-- [ ] Decide whether to present fallback mode as an intentional offline-safe demo feature.
+- [ ] Enable Firebase Anonymous Auth.
+- [ ] Set Firebase `VITE_FIREBASE_*` env vars if moving off AI Studio fallback project.
+- [ ] Smoke test `/healthz`, `/`, `/app`, `/app?demo=true` on mobile.
+- [ ] Keep one browser tab logged into demo mode before presentation.
+- [ ] Keep `assets/meguri-demo.mp4` ready as backup if venue Wi-Fi fails.
 
-## Demo script, 90 seconds
+## Stretch goals after reliability
 
-**Hook:**
+1. **Voice polish** — Japanese/English guide voices and replay controls.
+2. **QR party mode** — share a party code/QR with another judge.
+3. **Three curated Tokyo routes** — Shibuya, Asakusa, Shimokitazawa.
+4. **AI provenance cards** — show “Gemini chose this because…” on each quest.
+5. **Postcard wall** — a more visual passport gallery for the final wow moment.
 
-> Tourists see Tokyo as a map. Meguri turns Tokyo into a living quest world, guided by AI spirits.
+## Risks and mitigations
 
-**Flow:**
+| Risk | Mitigation |
+| --- | --- |
+| Gemini key missing | `/healthz` exposes fallback mode; demo mode still works |
+| Firebase anonymous auth disabled | app falls back to local player; docs show console fix |
+| Venue Wi-Fi blocks camera/maps | use local demo mode + bundled MP4 backup |
+| API returns odd quest | keep curated static Shibuya quests as fallback |
+| Firestore rules block demo writes | localStorage fallback preserves core loop |
 
-1. Launch landing page.
-2. Choose Kohaku, the kitsune guide.
-3. Generate Shibuya quests.
-4. Open the Hachiko quest.
-5. Show the walk/scan step.
-6. Use GPS fallback if camera permissions slow the demo.
-7. Collect the postcard.
-8. Ask the guide for a nearby recommendation.
-9. Close with party mode and daily quests as retention loops.
+## Success metric
 
-## Highest-impact engineering tasks
-
-1. **Production deploy polish**
-   - Keep `render.yaml` working.
-   - Confirm the deployed app uses `PORT` from the host.
-   - Add the deployed URL to the GitHub repo homepage.
-
-2. **Credentials/config**
-   - Set `GEMINI_API_KEY` in Render.
-   - Keep `.env.example` secret-free.
-   - Do not commit real Firebase or Gemini secrets.
-
-3. **Firestore hardening**
-   - Current `firestore.rules` are demo-open.
-   - Use `firestore.production.rules` as the lock-down starting point.
-   - Before switching, verify cached-player boot still signs in anonymously before Firestore writes.
-
-4. **Judge-proof fallback story**
-   - If Gemini quota/API fails, fallback mode keeps the demo moving.
-   - Label this as intentional graceful degradation, not a bug.
-
-5. **Live QA checklist**
-   - Landing page loads.
-   - App launches.
-   - Guide selection works.
-   - Quest list appears.
-   - Quest detail opens.
-   - Camera permission denial does not kill the flow.
-   - GPS fallback completes.
-   - Postcard reward appears.
-   - Guide chat returns a response.
-   - No console errors on the golden path.
-
-## Stretch goals
-
-- Add shareable postcard URLs.
-- Add one real Google Maps deep link per quest.
-- Add a visible “AI mode: Live / Fallback” badge for transparent demo status.
-- Add a seeded “Judge demo” button that resets local storage and jumps to the best route.
-- Add lightweight analytics events for onboarding, quest start, check-in success, postcard earned, and guide chat.
-
-## Risks to avoid
-
-- Do not tighten Firestore rules right before demo without a full browser test.
-- Do not rely on camera permissions for the live demo path; GPS fallback should remain available.
-- Do not spend hackathon time building broad content inventory before the main loop is judge-proof.
+A judge can understand the product in 15 seconds, interact with the AI in 45 seconds, and see a collectible reward before 90 seconds.

@@ -1,72 +1,107 @@
 # Meguri 巡り
 
-Meguri is a Tokyo location-quest prototype: choose an AI spirit guide, receive a Shibuya walking quest, verify arrival with camera/GPS, and collect a generated ukiyo-e postcard in your passport.
+**Tokyo is hiding something. Let's go find it.**
 
-## Demo loop
+Meguri is a mobile-web location quest game for tourists in Tokyo. An AI spirit guide turns real places into walkable quests, verifies arrival with camera/GPS, and rewards each discovery with an ukiyo-e postcard for the player's Tokyo Passport.
+
+Built for the **Entertainment / Experimental AI** hackathon track: interactive AI, multimodal camera/GPS/maps, storytelling, voice, and consumer entertainment.
+
+## Golden demo path
+
+Use this path for judges:
 
 1. Open the landing page.
-2. Launch the app and choose a guide: Kohaku, Sen, or Riku.
-3. Generate or select a Shibuya quest.
-4. Walk to the target and verify by camera or GPS fallback.
-5. Collect the postcard reward and continue via guide chat or party mode.
+2. Click **Judge Demo Mode** or visit `/app?demo=true`.
+3. Show the Shibuya quest map and **Gemini + Maps Ready** badge.
+4. Open **Guide** and ask for a ramen/shrine recommendation.
+5. Use **Quest Me There** to create a quest from the recommendation.
+6. Start the quest, use camera/GPS check-in, then show the postcard reward.
+7. Open **Archive** to show the Tokyo Passport.
 
-## What is implemented
+Demo mode is deterministic and judge-safe. It does not require Firebase auth to succeed before showing the core game loop.
 
-- React 19 + Vite mobile-first app shell.
-- Express API server for quest generation, guide chat, landmark verification, and postcard generation.
-- Gemini-powered flows when `GEMINI_API_KEY` is present.
-- Fallback mode when no Gemini key is configured, so the demo still works.
-- Firebase anonymous auth + Firestore integration for player/passport/party state.
-- Static landing page, pitch deck PDF, and short demo video.
+## How it works
 
-## Run locally
+- **Frontend:** React 19 + Vite + Tailwind v4 + Motion.
+- **Server:** Express routes in `server.ts`, bundled into `dist/server.mjs`.
+- **AI:** Google Gemini via `@google/genai`.
+  - `/api/generate-quests` uses Gemini + Google Maps/Search grounding when `GEMINI_API_KEY` is configured.
+  - `/api/verify-landmark` uses Gemini vision for camera landmark verification.
+  - `/api/generate-postcard` uses Gemini image generation for ukiyo-e rewards.
+  - `/api/guide-chat` uses persona prompts and Maps grounding for recommendations.
+- **Persistence:** Firebase Auth + Firestore for players, passport items, and parties; local fallback keeps demos resilient.
+- **Multimodal:** camera, GPS, voice synthesis, maps grounding, image generation.
 
-Prerequisites: Node.js 20+.
+## Local run
 
 ```bash
 npm ci
 cp .env.example .env
-# Edit .env and set GEMINI_API_KEY for real AI mode, or leave it blank for fallback demo mode.
+# edit .env if you want live Gemini/Firebase mode
 npm run dev
 ```
 
 Open:
 
-- Landing page: http://localhost:3000/
-- App: http://localhost:3000/app
-- Health check: http://localhost:3000/healthz
+- Landing: <http://localhost:3000/>
+- App: <http://localhost:3000/app>
+- Judge demo: <http://localhost:3000/app?demo=true>
+- Health: <http://localhost:3000/healthz>
 
-## Production build
+## Verification
 
 ```bash
 npm run lint
 npm run build
-NODE_ENV=production npm run start
+PORT=3001 NODE_ENV=production npm run start
+curl http://127.0.0.1:3001/healthz
 ```
 
-The server reads `PORT`, so Render/Railway/Fly can inject the public port automatically.
+Expected `/healthz` shape:
 
-## Deploy on Render
+```json
+{
+  "ok": true,
+  "service": "meguri",
+  "aiMode": "live-gemini | fallback-demo",
+  "demoMode": false
+}
+```
 
-This repo now includes `render.yaml`.
+## Render deploy
 
-1. Push the repo to GitHub.
+This repo includes `render.yaml` for Render Blueprint deploys.
+
+1. Push this repo/branch to GitHub.
 2. In Render: **New + → Blueprint**.
-3. Select this repo.
+3. Select `nvmmonsalud/meguriv2`.
 4. Add environment variables:
-   - `GEMINI_API_KEY`: required for real Gemini quest/chat/vision/image flows.
-   - `APP_URL`: your deployed app URL after Render creates it.
-5. In Firebase Console, enable **Authentication → Sign-in method → Anonymous** for real player IDs.
-6. Deploy.
+   - `GEMINI_API_KEY` — required for live AI mode.
+   - `APP_URL` — Render service URL after first deploy.
+   - `VITE_FIREBASE_*` — Firebase web app values if using your own Firebase project.
+5. Deploy.
+6. Smoke test `/healthz`, `/`, `/app`, and `/app?demo=true`.
 
-If `GEMINI_API_KEY` is missing, the app intentionally runs in fallback demo mode.
+## Firebase setup
 
-## Hackathon assets
+For live persistence and party mode:
 
-- Pitch deck: `pitch/meguri-pitch-deck.pdf`
-- Demo video: `assets/meguri-demo.mp4`
-- Continuation plan: `docs/HACKATHON_NEXT_STEPS.md`
+1. Firebase Console → Authentication → Sign-in method.
+2. Enable **Anonymous** provider.
+3. Create or choose a Firestore database.
+4. Deploy `firestore.rules` after verifying the app uses Firebase Auth successfully.
 
-## Security notes
+The app falls back to local mock player IDs when Firebase Auth is not enabled so hackathon demos do not hard-fail.
 
-The checked-in `firestore.rules` are permissive for a low-friction hackathon demo. Do **not** deploy them unchanged for production. Use `firestore.production.rules` as the starting point for locked-down anonymous-user ownership rules.
+## Demo artifacts
+
+- Pitch deck: `pitch/index.html`
+- Static deck PDF: `pitch/meguri-pitch-deck.pdf` — verified PDF 1.4, 1.6 MB
+- Short demo video: `assets/meguri-demo.mp4` — verified MP4, 412×892, 25 fps, 71.32 seconds, 3.5 MB
+- Hackathon plan + judge script: `docs/HACKATHON_NEXT_STEPS.md`
+
+## Current known constraints
+
+- Without `GEMINI_API_KEY`, AI routes return polished fallback responses.
+- Strict Firestore rules require Firebase Anonymous Auth to be enabled before live writes work.
+- Camera/GPS access requires HTTPS on deployed hosts or localhost in development.

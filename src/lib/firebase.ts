@@ -28,17 +28,19 @@ export interface FirestoreErrorInfo {
   }
 }
 
-// Explicit Firebase configuration from firebase-applet-config.json
+// Firebase configuration is env-driven for deploys, with the AI Studio project as a demo fallback.
+// Firebase API keys are public client identifiers; keep server secrets in environment variables only.
+const env = import.meta.env;
 const firebaseConfig = {
-  projectId: "gen-lang-client-0838799337",
-  appId: "1:742863269589:web:f0d0b279e894af7db87c5c",
-  apiKey: "AIzaSyCnarbvSpeSCgjp5dOeNCUwqWfVWe662lo",
-  authDomain: "gen-lang-client-0838799337.firebaseapp.com",
-  storageBucket: "gen-lang-client-0838799337.firebasestorage.app",
-  messagingSenderId: "742863269589"
+  projectId: env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0838799337",
+  appId: env.VITE_FIREBASE_APP_ID || "1:742863269589:web:f0d0b279e894af7db87c5c",
+  apiKey: env.VITE_FIREBASE_API_KEY || "AIzaSyCnarbvSpeSCgjp5dOeNCUwqWfVWe662lo",
+  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN || "gen-lang-client-0838799337.firebaseapp.com",
+  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET || "gen-lang-client-0838799337.firebasestorage.app",
+  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID || "742863269589"
 };
 
-const databaseId = "ai-studio-b5d5e5b2-adad-465b-98b5-bcd232d18e4d";
+const databaseId = env.VITE_FIRESTORE_DATABASE_ID || "ai-studio-b5d5e5b2-adad-465b-98b5-bcd232d18e4d";
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);

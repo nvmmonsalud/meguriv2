@@ -90,7 +90,14 @@ import GuideChat from "./components/GuideChat";
 
 type ScreenTab = "map" | "quests" | "archive" | "guide" | "social";
 
+function isDemoModeEnabled() {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  return params.get("demo") === "true" || import.meta.env.VITE_DEMO_MODE === "true";
+}
+
 export default function App() {
+  const demoMode = isDemoModeEnabled();
   const [onboarded, setOnboarded] = useState(false);
   const [player, setPlayer] = useState<Player | null>(null);
   const [guide, setGuide] = useState<Guide | null>(null);
@@ -140,6 +147,32 @@ export default function App() {
   useEffect(() => {
     const cachedName = localStorage.getItem("meguri_player_name");
     const cachedGuideId = localStorage.getItem("meguri_player_guide_id");
+
+    if (demoMode) {
+      const selectedGuide = GUIDES[0];
+      const demoPlayer: Player = {
+        id: "demo-judge",
+        name: "Judge",
+        guideId: selectedGuide.id,
+        xp: 450,
+        level: 12,
+        kakera: 128,
+        visitedLocations: [],
+        lastActive: new Date().toISOString(),
+        latitude: 35.6580,
+        longitude: 139.7013,
+        lastDailyReset: new Date().toISOString(),
+        dailyQuests: generateDailyQuests()
+      };
+      setGuide(selectedGuide);
+      setPlayer(demoPlayer);
+      setCompletedQuests([]);
+      setPassportItems([]);
+      setQuests(QUESTS);
+      setOnboarded(true);
+      showToast("Demo Mode: judge-safe route loaded with Kohaku and Shibuya quests.");
+      return;
+    }
     
     if (cachedName && cachedGuideId) {
       const selectedGuide = GUIDES.find(g => g.id === cachedGuideId) || GUIDES[0];
@@ -708,6 +741,7 @@ export default function App() {
                 onDailyQuestTrigger={triggerDailyQuestProgress}
                 onForceResetDailyQuests={handleForceResetDailyQuests}
                 onTestLevelUp={handleTestLevelUp}
+                demoMode={demoMode}
               />
             </motion.div>
           )}
@@ -732,6 +766,7 @@ export default function App() {
                 onDailyQuestTrigger={triggerDailyQuestProgress}
                 onForceResetDailyQuests={handleForceResetDailyQuests}
                 onTestLevelUp={handleTestLevelUp}
+                demoMode={demoMode}
               />
               <QuestDetails
                 quest={selectedQuest || quests[1] || quests[0] || QUESTS[1]}
