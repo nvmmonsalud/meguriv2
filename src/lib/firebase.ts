@@ -28,19 +28,44 @@ export interface FirestoreErrorInfo {
   }
 }
 
-// Firebase configuration is env-driven for deploys, with the AI Studio project as a demo fallback.
-// Firebase API keys are public client identifiers; keep server secrets in environment variables only.
+// Firebase configuration is env-driven for deploys. If the deploy has not
+// provided a Firebase web app config yet, use a clearly fake local-demo config
+// so the UI can keep running on localStorage without committing a real Google key.
 const env = import.meta.env;
-const firebaseConfig = {
-  projectId: env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0838799337",
-  appId: env.VITE_FIREBASE_APP_ID || "1:742863269589:web:f0d0b279e894af7db87c5c",
-  apiKey: env.VITE_FIREBASE_API_KEY || "AIzaSyCnarbvSpeSCgjp5dOeNCUwqWfVWe662lo",
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN || "gen-lang-client-0838799337.firebaseapp.com",
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET || "gen-lang-client-0838799337.firebasestorage.app",
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID || "742863269589"
-};
+const requiredFirebaseEnv = [
+  "VITE_FIREBASE_API_KEY",
+  "VITE_FIREBASE_PROJECT_ID",
+  "VITE_FIREBASE_APP_ID",
+  "VITE_FIREBASE_AUTH_DOMAIN",
+  "VITE_FIREBASE_STORAGE_BUCKET",
+  "VITE_FIREBASE_MESSAGING_SENDER_ID",
+] as const;
 
-const databaseId = env.VITE_FIRESTORE_DATABASE_ID || "ai-studio-b5d5e5b2-adad-465b-98b5-bcd232d18e4d";
+const hasFirebaseConfig = requiredFirebaseEnv.every((key) => Boolean(env[key]));
+
+const firebaseConfig = hasFirebaseConfig
+  ? {
+      apiKey: env.VITE_FIREBASE_API_KEY,
+      projectId: env.VITE_FIREBASE_PROJECT_ID,
+      appId: env.VITE_FIREBASE_APP_ID,
+      authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
+      storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    }
+  : {
+      apiKey: "demo-firebase-api-key",
+      projectId: "meguri-demo-local",
+      appId: "1:000000000000:web:meguri-demo-local",
+      authDomain: "meguri-demo-local.firebaseapp.com",
+      storageBucket: "meguri-demo-local.appspot.com",
+      messagingSenderId: "000000000000",
+    };
+
+const databaseId = hasFirebaseConfig ? env.VITE_FIRESTORE_DATABASE_ID || "(default)" : "(default)";
+
+if (!hasFirebaseConfig) {
+  console.warn("Firebase env config missing; Meguri will use local demo fallback state.");
+}
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
@@ -102,6 +127,6 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     operationType,
     path
   };
-  console.error("Firestore Error: ", JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
+  console.warn("Firestore operation skipped/deferred:", JSON.stringify(errInfo));
+  return errInfo;
 }

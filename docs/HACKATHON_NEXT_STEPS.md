@@ -42,7 +42,7 @@ Continue Meguri for the next Entertainment / Experimental AI hackathon. The stro
 - [ ] Add `GEMINI_API_KEY` on Render.
 - [ ] Set `APP_URL` to the deployed URL.
 - [ ] Enable Firebase Anonymous Auth.
-- [ ] Set Firebase `VITE_FIREBASE_*` env vars if moving off AI Studio fallback project.
+- [ ] Set Firebase `VITE_FIREBASE_*` env vars for live Auth + Firestore persistence; otherwise Meguri uses local demo fallback state.
 - [ ] Smoke test `/healthz`, `/`, `/app`, `/app?demo=true` on mobile.
 - [ ] Keep one browser tab logged into demo mode before presentation.
 - [ ] Keep `assets/meguri-demo.mp4` ready as backup if venue Wi-Fi fails.

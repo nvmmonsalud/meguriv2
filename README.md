@@ -78,7 +78,7 @@ This repo includes `render.yaml` for Render Blueprint deploys.
 4. Add environment variables:
    - `GEMINI_API_KEY` — required for live AI mode.
    - `APP_URL` — Render service URL after first deploy.
-   - `VITE_FIREBASE_*` — Firebase web app values if using your own Firebase project.
+   - `VITE_FIREBASE_*` — Firebase web app values for live Auth + Firestore persistence.
 5. Deploy.
 6. Smoke test `/healthz`, `/`, `/app`, and `/app?demo=true`.
 
@@ -91,7 +91,7 @@ For live persistence and party mode:
 3. Create or choose a Firestore database.
 4. Deploy `firestore.rules` after verifying the app uses Firebase Auth successfully.
 
-The app falls back to local mock player IDs when Firebase Auth is not enabled so hackathon demos do not hard-fail.
+If Firebase env vars are unset, the app uses a non-secret local demo fallback and stores player state in `localStorage`. Enable Firebase Anonymous Auth for live persistence.
 
 ## Demo artifacts
 
